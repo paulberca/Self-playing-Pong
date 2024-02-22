@@ -8,11 +8,17 @@ class Paddle:
         self.__distance_from_border = 25
         self.__surface = surface
         self.__rect = pygame.Rect(*initial_coords, self.__width, self.__height)
-        self.__speed = 5
+        self.__speed = 6
         self.__color = "white"
 
     def get_rect(self):
         return self.__rect
+
+    def get_width(self):
+        return self.__width
+
+    def get_speed(self):
+        return self.__speed
 
     def draw(self):
         pygame.draw.rect(self.__surface, self.__color, self.__rect)

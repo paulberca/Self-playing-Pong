@@ -13,12 +13,24 @@ class Ball:
         self.__y_velocity = random.choice([math.sin(angle), -math.sin(angle)])
 
         self.__speed = 5
-        starting_coords = self.__surface.get_width() // 2 - self.__radius, self.__surface.get_height() // 2 - self.__radius
-        self.__circle = pygame.Rect(*starting_coords, self.__radius * 2, self.__radius * 2)
+        self.__starting_coords = self.__surface.get_width() // 2 - self.__radius, self.__surface.get_height() // 2 - self.__radius
+        self.__circle = pygame.Rect(*self.__starting_coords, self.__radius * 2, self.__radius * 2)
         self.__color = "white"
+
+    def reset_ball(self):
+        self.__circle.x, self.__circle.y = self.__starting_coords
 
     def get_rect(self):
         return self.__circle
+
+    def get_width(self):
+        return self.__radius * 2
+
+    def get_speed(self):
+        return self.__speed
+
+    def increase_speed(self):
+        self.__speed += 0.3
 
     def draw(self):
         pygame.draw.circle(self.__surface, self.__color, self.__circle.center, self.__radius)

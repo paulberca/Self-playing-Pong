@@ -8,9 +8,9 @@ class Ball:
         self.__surface = surface
         self.__radius = 15
 
-        angle = random.choice([random.uniform(- math.pi / 4, - math.pi / 10), random.uniform(math.pi / 10, math.pi / 4)])
-        self.__x_velocity = random.choice([math.cos(angle), -math.cos(angle)])
-        self.__y_velocity = random.choice([math.sin(angle), -math.sin(angle)])
+        self.__angle = random.choice([random.uniform(- math.pi / 4, - math.pi / 10), random.uniform(math.pi / 10, math.pi / 4)])
+        self.__x_velocity = random.choice([math.cos(self.__angle), -math.cos(self.__angle)])
+        self.__y_velocity = random.choice([math.sin(self.__angle), -math.sin(self.__angle)])
 
         self.__speed = 5
         self.__starting_coords = self.__surface.get_width() // 2 - self.__radius, self.__surface.get_height() // 2 - self.__radius
@@ -19,9 +19,19 @@ class Ball:
 
     def reset_ball(self):
         self.__circle.x, self.__circle.y = self.__starting_coords
+        self.__speed = 5
+
+    def randomize_bounce_angle(self):
+        angle = random.choice([random.uniform(self.__angle - math.pi / 30, self.__angle - math.pi / 40),
+                               random.uniform(self.__angle + math.pi / 40, self.__angle + math.pi / 30)])
+        self.__x_velocity = random.choice([math.cos(angle), -math.cos(angle)])
+        self.__y_velocity = random.choice([math.sin(angle), -math.sin(angle)])
 
     def get_rect(self):
         return self.__circle
+
+    def get_velocity(self):
+        return self.__x_velocity, self.__y_velocity
 
     def get_width(self):
         return self.__radius * 2
@@ -30,6 +40,7 @@ class Ball:
         return self.__speed
 
     def increase_speed(self):
+        # if self.__speed < 50:
         self.__speed += 0.3
 
     def draw(self):

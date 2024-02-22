@@ -17,6 +17,9 @@ class Paddle:
     def get_width(self):
         return self.__width
 
+    def get_height(self):
+        return self.__height
+
     def get_speed(self):
         return self.__speed
 

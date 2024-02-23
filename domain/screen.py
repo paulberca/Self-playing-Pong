@@ -11,7 +11,7 @@ class Screen:
         pygame.display.set_caption("Pong")
 
         # the window
-        self.__screen_size = 600, 400
+        self.__screen_size = 800, 600
         self.__screen = pygame.display.set_mode(self.__screen_size)
         self.__clock = pygame.time.Clock()
         self.__fps = 120
@@ -21,9 +21,9 @@ class Screen:
 
         # players
         self.__distance_from_border = 15
-        player_starting_position = self.__distance_from_border, (self.__screen_size[1] - 100) // 2
+        player_starting_position = self.__distance_from_border, (self.__screen_size[1] - 150) // 2
         enemy_starting_position = self.__screen_size[0] - 30 - self.__distance_from_border, (
-                self.__screen_size[1] - 100) // 2
+                self.__screen_size[1] - 150) // 2
         self.__player = Paddle(player_starting_position, self.__screen)
         self.__enemy = Paddle(enemy_starting_position, self.__screen)
         self.__ai_right = AI(self.__enemy)
@@ -59,7 +59,7 @@ class Screen:
                     and self.__ball.get_rect().x + self.__ball.get_width() - self.__ball.get_speed() <= self.__enemy.get_rect().x):
                 self.__ball.invert_x_velocity()
                 self.__ball.increase_speed()
-                # self.__ball.randomize_bounce_angle()
+                self.__ball.randomize_angle()
 
                 self.__future_player1_position = self.__ai_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
                 self.__future_player2_position = self.__ai_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
@@ -71,9 +71,6 @@ class Screen:
         # collision with top and bottom screen bounds
         if self.__ball.get_rect().y <= 0 or self.__ball.get_rect().y >= self.__screen.get_height() - self.__ball.get_rect().height:
             self.__ball.invert_y_velocity()
-
-            self.__future_player1_position = self.__ai_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
-            self.__future_player2_position = self.__ai_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
 
     def __check_end_game(self):
         def display_text(text: str):

@@ -4,7 +4,7 @@ import pygame.draw
 class Paddle:
     def __init__(self, initial_coords: tuple, surface: pygame.Surface):
         self.__width = 30
-        self.__height = 100
+        self.__height = 150
         self.__distance_from_border = 25
         self.__surface = surface
         self.__rect = pygame.Rect(*initial_coords, self.__width, self.__height)

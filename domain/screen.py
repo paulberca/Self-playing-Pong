@@ -1,6 +1,6 @@
 import pygame
 
-from ai.ai import AI
+from botPredictor.BotPredictor import BotPredictor
 from domain.ball import Ball
 from domain.paddle import Paddle
 
@@ -26,13 +26,13 @@ class Screen:
                 self.__screen_size[1] - 150) // 2
         self.__player = Paddle(player_starting_position, self.__screen)
         self.__enemy = Paddle(enemy_starting_position, self.__screen)
-        self.__ai_right = AI(self.__enemy)
-        self.__ai_left = AI(self.__player)
+        self.bot_right = BotPredictor(self.__enemy)
+        self.bot_left = BotPredictor(self.__player)
 
         # ball
         self.__ball = Ball(self.__screen)
-        self.__future_player1_position = self.__ai_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
-        self.__future_player2_position = self.__ai_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
+        self.__future_player1_position = self.bot_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
+        self.__future_player2_position = self.bot_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
 
     def __keypress_actions(self):
         keys = pygame.key.get_pressed()
@@ -47,8 +47,8 @@ class Screen:
         if self.__game_end and keys[pygame.K_SPACE]:
             self.__game_end = False
             self.__ball.reset_ball()
-            self.__future_player1_position = self.__ai_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
-            self.__future_player2_position = self.__ai_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
+            self.__future_player1_position = self.bot_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
+            self.__future_player2_position = self.bot_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
 
     def __ball_collision(self):
         # paddle collision
@@ -61,8 +61,8 @@ class Screen:
                 self.__ball.increase_speed()
                 self.__ball.randomize_angle()
 
-                self.__future_player1_position = self.__ai_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
-                self.__future_player2_position = self.__ai_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
+                self.__future_player1_position = self.bot_left.predict_ball_position_left(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
+                self.__future_player2_position = self.bot_right.predict_ball_position_right(self.__ball, self.__screen.get_width(), self.__screen.get_height(), self.__distance_from_border)
 
             # top and bottom collision
             else:
@@ -102,18 +102,18 @@ class Screen:
             self.__enemy.draw()
             self.__ball.draw()
 
-            self.__future_player1_position = self.__ai_left.predict_ball_position_left(self.__ball,
-                                                                                       self.__screen.get_width(),
-                                                                                       self.__screen.get_height(),
-                                                                                       self.__distance_from_border)
-            self.__future_player2_position = self.__ai_right.predict_ball_position_right(self.__ball,
-                                                                                         self.__screen.get_width(),
-                                                                                         self.__screen.get_height(),
-                                                                                         self.__distance_from_border)
+            self.__future_player1_position = self.bot_left.predict_ball_position_left(self.__ball,
+                                                                                      self.__screen.get_width(),
+                                                                                      self.__screen.get_height(),
+                                                                                      self.__distance_from_border)
+            self.__future_player2_position = self.bot_right.predict_ball_position_right(self.__ball,
+                                                                                        self.__screen.get_width(),
+                                                                                        self.__screen.get_height(),
+                                                                                        self.__distance_from_border)
 
             # if you want to play yourself just comment the next two lines
-            self.__ai_left.move_paddle(self.__future_player1_position)
-            self.__ai_right.move_paddle(self.__future_player2_position)
+            self.bot_left.move_paddle(self.__future_player1_position)
+            self.bot_right.move_paddle(self.__future_player2_position)
 
             if not self.__game_end:
                 self.__ball.move()

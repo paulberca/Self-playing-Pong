@@ -1,4 +1,4 @@
-class AI:
+class BotPredictor:
     def __init__(self, paddle):
         self.__paddle = paddle
 
